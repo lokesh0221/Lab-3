@@ -4,10 +4,19 @@ const email = document.getElementById('email');
 const password = document.getElementById('password');
 const password2 = document.getElementById('password2');
 const phone = document.getElementById('phone');
+
 form.addEventListener('submit', e => {
     e.preventDefault();
 
-    validateInputs();
+    if (validateInputs()) {
+        // Only set success and redirect if inputs are valid
+        setSuccess(email);
+        setSuccess(password);
+        setSuccess(username);
+        setSuccess(phone);
+        setSuccess(password2);
+        window.location.href = 'index.html';
+    }
 });
 
 const setError = (element, message) => {
@@ -16,7 +25,7 @@ const setError = (element, message) => {
 
     errorDisplay.innerText = message;
     inputControl.classList.add('error');
-    inputControl.classList.remove('success')
+    inputControl.classList.remove('success');
 }
 
 const setSuccess = element => {
@@ -38,8 +47,6 @@ const isValidPhone = phoneNumber => {
     return re.test(phoneNumber);
 }
 
-  
-
 const validateInputs = () => {
     const usernameValue = username.value.trim();
     const emailValue = email.value.trim();
@@ -47,24 +54,21 @@ const validateInputs = () => {
     const password2Value = password2.value.trim();
     const phoneValue = phone.value.trim();
 
-    if(usernameValue === '') {
+    if (usernameValue === '') {
         setError(username, 'Username is required');
     } else {
         setSuccess(username);
     }
 
-
-    if(phoneValue === '') {
+    if (phoneValue === '') {
         setError(phone, 'Phone number is required');
     } else if (!isValidPhone(phoneValue)) {
         setError(phone, 'Provide a valid phone number');
-    }
-    else {
+    } else {
         setSuccess(phone);
     }
 
-
-    if(emailValue === '') {
+    if (emailValue === '') {
         setError(email, 'Email is required');
     } else if (!isValidEmail(emailValue)) {
         setError(email, 'Provide a valid email address');
@@ -72,20 +76,32 @@ const validateInputs = () => {
         setSuccess(email);
     }
 
-    if(passwordValue === '') {
+    if (passwordValue === '') {
         setError(password, 'Password is required');
-    } else if (passwordValue.length < 8 ) {
-        setError(password, 'Password must be at least 8 character.')
+    } else if (passwordValue.length < 8) {
+        setError(password, 'Password must be at least 8 characters.');
     } else {
         setSuccess(password);
     }
 
-    if(password2Value === '') {
+    if (password2Value === '') {
         setError(password2, 'Please confirm your password');
     } else if (password2Value !== passwordValue) {
-        setError(password2, "Passwords doesn't match");
+        setError(password2, "Passwords don't match");
     } else {
         setSuccess(password2);
     }
 
+    // Return true only if all validations passed
+    return (
+        usernameValue !== '' &&
+        phoneValue !== '' &&
+        isValidPhone(phoneValue) &&
+        emailValue !== '' &&
+        isValidEmail(emailValue) &&
+        passwordValue !== '' &&
+        passwordValue.length >= 8 &&
+        password2Value !== '' &&
+        password2Value === passwordValue
+    );
 };

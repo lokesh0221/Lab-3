@@ -19,7 +19,7 @@ const setError = (element, message) => {
 
     errorDisplay.innerText = message;
     inputControl.classList.add('error');
-    inputControl.classList.remove('success')
+    inputControl.classList.remove('success');
 }
 
 const setSuccess = element => {
@@ -36,21 +36,11 @@ const isValidEmail = email => {
     return re.test(String(email).toLowerCase());
 }
 
-
-  
-
 const validateInputs = () => {
-
     const emailValue = email.value.trim();
     const passwordValue = password.value.trim();
 
-
-
-
-
-
-
-    if(emailValue === '') {
+    if (emailValue === '') {
         setError(email, 'Email is required');
     } else if (!isValidEmail(emailValue)) {
         setError(email, 'Provide a valid email address');
@@ -58,14 +48,14 @@ const validateInputs = () => {
         setSuccess(email);
     }
 
-    if(passwordValue === '') {
+    if (passwordValue === '') {
         setError(password, 'Password is required');
-    } else if (passwordValue.length < 8 ) {
-        setError(password, 'Password must be at least 8 character.')
+    } else if (passwordValue.length < 8) {
+        setError(password, 'Password must be at least 8 characters.');
     } else {
         setSuccess(password);
     }
 
-
-
+    // Return true only if all validations passed
+    return emailValue !== '' && isValidEmail(emailValue) && passwordValue !== '' && passwordValue.length >= 8;
 };
